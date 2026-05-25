@@ -1,0 +1,20 @@
+{
+  "name": "even-realities-cicd-tools",
+  "version": "0.0.1",
+  "private": false,
+  "type": "module",
+  "description": "Reusable CI/CD deployment tools for Even Realities apps.",
+  "bin": {
+    "even-realities-deploy": "./bin/even-realities-deploy.mjs"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "keywords": [
+    "even-realities",
+    "cicd",
+    "github-actions",
+    "deployment"
+  ],
+  "license": "MIT"
+}

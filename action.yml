@@ -1,0 +1,43 @@
+name: Even Realities CI/CD Tools
+description: Publish a packaged .ehpk file to the Even Hub portal.
+author: Fidelio Wilson
+
+inputs:
+  package-id:
+    description: Even Realities package id. Optional if PACKAGE_ID is already set in env.
+    required: false
+  ehpk-path:
+    description: Path to the packaged .ehpk file. Optional if EHPK_PATH is already set in env.
+    required: false
+  changelog:
+    description: Changelog text to publish with the draft. Optional if CHANGELOG is already set in env.
+    required: false
+  evenhub-username:
+    description: Even Hub login username or email. Optional if EVENHUB_USERNAME is already set in env.
+    required: false
+  evenhub-password:
+    description: Even Hub plaintext password. Optional if EVENHUB_PASSWORD is already set in env.
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Publish to Even Hub
+      shell: bash
+      env:
+        INPUT_PACKAGE_ID: ${{ inputs.package-id }}
+        INPUT_EHPK_PATH: ${{ inputs.ehpk-path }}
+        INPUT_CHANGELOG: ${{ inputs.changelog }}
+        INPUT_EVENHUB_USERNAME: ${{ inputs.evenhub-username }}
+        INPUT_EVENHUB_PASSWORD: ${{ inputs.evenhub-password }}
+      run: |
+        if [ -n "$INPUT_PACKAGE_ID" ]; then export PACKAGE_ID="$INPUT_PACKAGE_ID"; fi
+        if [ -n "$INPUT_EHPK_PATH" ]; then export EHPK_PATH="$INPUT_EHPK_PATH"; fi
+        if [ -n "$INPUT_CHANGELOG" ]; then export CHANGELOG="$INPUT_CHANGELOG"; fi
+        if [ -n "$INPUT_EVENHUB_USERNAME" ]; then export EVENHUB_USERNAME="$INPUT_EVENHUB_USERNAME"; fi
+        if [ -n "$INPUT_EVENHUB_PASSWORD" ]; then export EVENHUB_PASSWORD="$INPUT_EVENHUB_PASSWORD"; fi
+        node "$GITHUB_ACTION_PATH/bin/even-realities-deploy.mjs"
+
+branding:
+  icon: upload-cloud
+  color: green
